@@ -13,6 +13,7 @@ export default function CityList() {
             emoji={city.emoji}
             date={city.date}
             name={city.cityName}
+            position={city.position}
             key={city.id}
             id={city.id}
             setCities={setCities}

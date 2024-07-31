@@ -2,7 +2,7 @@ import React from "react";
 import { Link, NavLink, useNavigate } from "react-router-dom";
 import styles from "./CityItem.module.css";
 
-export default function CityItem({ emoji, name, date, setCities, id }) {
+export default function CityItem({ emoji, name, date, setCities, id, position }) {
   const formatDate = (date) =>
     new Intl.DateTimeFormat("en", {
       day: "numeric",
@@ -18,14 +18,11 @@ export default function CityItem({ emoji, name, date, setCities, id }) {
       });
     };
   };
-  const navigate = useNavigate();
   return (
     <li>
-      <a
+      <Link
         className={styles.cityItem}
-        onClick={(e) => {
-          navigate(String(id));
-        }}
+        to={`${id}?lat=${position.lat}&lng=${position.lng}`}
       >
         <span className={styles.emoji}>{emoji}</span>
         <h3 className={styles.name}>{name}</h3>
@@ -33,7 +30,7 @@ export default function CityItem({ emoji, name, date, setCities, id }) {
         <button className={styles.deleteBtn} onClick={handleDelete(id)}>
           &times;
         </button>
-      </a>
+      </Link>
     </li>
   );
 }
