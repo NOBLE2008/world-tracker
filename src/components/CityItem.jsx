@@ -1,8 +1,17 @@
-import React from "react";
+import React, { useContext } from "react";
 import { Link, NavLink, useNavigate } from "react-router-dom";
 import styles from "./CityItem.module.css";
+import { CityContext } from "../context/CityContext";
 
-export default function CityItem({ emoji, name, date, setCities, id, position }) {
+export default function CityItem({
+  emoji,
+  name,
+  date,
+  setCities,
+  id,
+  position,
+}) {
+  const { currentCity } = useContext(CityContext);
   const formatDate = (date) =>
     new Intl.DateTimeFormat("en", {
       day: "numeric",
@@ -12,6 +21,7 @@ export default function CityItem({ emoji, name, date, setCities, id, position })
 
   const handleDelete = (id) => {
     return (e) => {
+      e.preventDefault();
       e.stopPropagation();
       return setCities((cities) => {
         return cities.filter((c) => c.id !== id);
@@ -21,7 +31,9 @@ export default function CityItem({ emoji, name, date, setCities, id, position })
   return (
     <li>
       <Link
-        className={styles.cityItem}
+        className={`${styles.cityItem} ${
+          currentCity.id === id ? styles["cityItem--active"] : ""
+        }`}
         to={`${id}?lat=${position.lat}&lng=${position.lng}`}
       >
         <span className={styles.emoji}>{emoji}</span>
