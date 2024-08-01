@@ -7,7 +7,6 @@ export default function CityItem({
   emoji,
   name,
   date,
-  setCities,
   id,
   position,
 }) {

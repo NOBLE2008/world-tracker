@@ -5,7 +5,7 @@ import { CityContext } from "../context/CityContext";
 import Spinner from "./Spinner";
 
 export default function CityList() {
-  const { cities, setCities, isLoading, setIsLoading } =
+  const { cities, setCities, isLoading } =
     useContext(CityContext);
   if (isLoading) return <Spinner />;
   return (
@@ -19,7 +19,6 @@ export default function CityList() {
             position={city.position}
             key={city.id}
             id={city.id}
-            setCities={setCities}
           />
         );
       })}

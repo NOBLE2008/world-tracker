@@ -24,7 +24,7 @@ export default function Map() {
   const lat = searchParams.get("lat");
   const lng = searchParams.get("lng");
 
-  const { position, setPosition } = useContext(CityContext);
+  const { position, dispatch } = useContext(CityContext);
   const [useMyPosition, setUseMyPosition] = useState(false);
 
   const [error, isLoading, geoPosition, getPosition] = useGeoLocation();
@@ -35,8 +35,8 @@ export default function Map() {
 
   useEffect(() => {
     if (geoPosition === null) return;
-    setPosition(geoPosition);
-  }, [geoPosition, setPosition]);
+    dispatch({type: 'changePosition', payload: geoPosition});
+  }, [geoPosition, dispatch]);
 
   if (isLoading) return <Spinner />;
   if (error) return <h3>Error Loading Live location</h3>;
