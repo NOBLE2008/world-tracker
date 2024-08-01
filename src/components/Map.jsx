@@ -66,7 +66,7 @@ export default function Map() {
 
     useMapEvents({
       click: (e) => {
-        navigate('form')
+        navigate(`form?lat=${e.latlng.lat}&lng=${e.latlng.lng}`);
       }
     })
   }
