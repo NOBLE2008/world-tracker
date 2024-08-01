@@ -53,6 +53,20 @@ function CityProvider({ children }) {
       setIsLoading(false);
     }
   }
+
+  async function deleteCity(id){
+    try {
+      setIsLoading(true);
+      const res = await fetch(`http://localhost:9000/cities/${id}`, {
+        method: "DELETE",
+      });
+      setCities((cities) => cities.filter(c => c.id !== id));
+    } catch (err) {
+      throw new Error(err);
+    } finally {
+      setIsLoading(false);
+    }
+  }
   return (
     <CityContext.Provider
       value={{
@@ -62,6 +76,7 @@ function CityProvider({ children }) {
         getCity,
         position,
         postCity,
+        deleteCity,
         setPosition,
         currentCity,
       }}
