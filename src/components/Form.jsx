@@ -8,6 +8,8 @@ import Button from "./Button";
 import BackButton from "./BackButton";
 import { CityContext } from "../context/CityContext";
 import DatePicker from "react-datepicker";
+import "react-datepicker/dist/react-datepicker.css";
+import Spinner from "./Spinner";
 
 function convertToEmoji(countryCode) {
   const codePoints = countryCode
@@ -24,12 +26,28 @@ function Form() {
   const [notes, setNotes] = useState("");
   const [emoji, setEmoji] = useState("");
 
-  const { position } = useContext(CityContext);
+  const { postCity, isLoading } = useContext(CityContext);
 
   const [searchParams] = useSearchParams();
 
   const lat = searchParams.get("lat");
   const lng = searchParams.get("lng");
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    if (!cityName || !date) return;
+    postCity({
+      cityName,
+      country,
+      emoji,
+      date,
+      notes,
+      position: {
+        lat,
+        lng,
+      },
+    });
+  };
 
   useEffect(() => {
     async function getData() {
@@ -39,11 +57,13 @@ function Form() {
       const data = await response.json();
       if (data?.city) setCityName(data.city);
       if (data?.countryCode) setEmoji(convertToEmoji(data.countryCode));
+      if (data?.countryName) setCountry(data.countryName);
     }
 
     getData();
   }, [lat, lng]);
 
+  if (isLoading) return <Spinner />;
   return (
     <form className={styles.form}>
       <div className={styles.row}>
@@ -59,6 +79,7 @@ function Form() {
       <div className={styles.row}>
         <label htmlFor="date">When did you go to {cityName}?</label>
         <DatePicker
+          id="date"
           onChange={(date) => setDate(date)}
           selected={date}
           dateFormat={"dd/MM/yyyy"}
@@ -75,7 +96,9 @@ function Form() {
       </div>
 
       <div className={styles.buttons}>
-        <Button type="primary">Add</Button>
+        <Button type="primary" onClick={handleSubmit}>
+          Add
+        </Button>
         <BackButton />
       </div>
     </form>
