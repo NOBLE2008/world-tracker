@@ -1,7 +1,7 @@
 import React, { useContext } from "react";
 import styles from "./Map.module.css";
 import { useNavigate, useSearchParams } from "react-router-dom";
-import { MapContainer, Marker, Popup, TileLayer, useMap } from "react-leaflet";
+import { MapContainer, Marker, Popup, TileLayer, useMap, useMapEvent, useMapEvents } from "react-leaflet";
 import { CityContext } from "../context/CityContext";
 
 export default function Map() {
@@ -59,5 +59,15 @@ export default function Map() {
     const map = useMap();
     map.setView(position);
     return null;
+  }
+
+  function DetectClick(){
+    const navigate = useNavigate()
+
+    useMapEvents({
+      click: (e) => {
+        navigate('form')
+      }
+    })
   }
 }
