@@ -11,7 +11,7 @@ export default function CityItem({
   id,
   position,
 }) {
-  const { currentCity } = useContext(CityContext);
+  const { currentCity, deleteCity } = useContext(CityContext);
   const formatDate = (date) =>
     new Intl.DateTimeFormat("en", {
       day: "numeric",
@@ -22,10 +22,7 @@ export default function CityItem({
   const handleDelete = (id) => {
     return (e) => {
       e.preventDefault();
-      e.stopPropagation();
-      return setCities((cities) => {
-        return cities.filter((c) => c.id !== id);
-      });
+      deleteCity(id)
     };
   };
   return (
