@@ -11,18 +11,22 @@ import {
   useMapEvents,
 } from "react-leaflet";
 import { CityContext } from "../context/CityContext";
+import useGeoLocation from "../../hooks/useGeoLocation";
+import Spinner from "./Spinner";
 
 export default function Map() {
   const { currentCity } = useContext(CityContext);
   const { cities } = useContext(CityContext);
-  console.log(cities);
 
   const [searchParams, setSearchParams] = useSearchParams();
 
   const lat = searchParams.get("lat");
   const lng = searchParams.get("lng");
 
-  const position = [3.436, 55.3781];
+  const [error, isLoading, position] = useGeoLocation();
+
+  if (isLoading) return <Spinner />;
+  if(error) return <h3>Error Loading Live location</h3>
   return (
     <div className={styles.mapContainer}>
       <div className={styles.map}>
@@ -51,11 +55,12 @@ export default function Map() {
               lat ||
                 currentCity?.position?.lat ||
                 cities[0]?.position?.lat ||
-                position[0],
+                position[0] || 40,
               lng ||
                 currentCity?.position?.lng ||
                 cities[0]?.position?.lng ||
-                position[1],
+                position[1] || 0,
+
             ]}
           />
           <DetectClick />
