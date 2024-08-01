@@ -1,10 +1,13 @@
-import React, { useContext } from "react";
+import React, { useContext, useEffect } from "react";
 import styles from "./CityList.module.css";
 import CityItem from "./CityItem";
 import { CityContext } from "../context/CityContext";
+import Spinner from "./Spinner";
 
 export default function CityList() {
-  const { cities, setCities } = useContext(CityContext)
+  const { cities, setCities, isLoading, setIsLoading } =
+    useContext(CityContext);
+  if (isLoading) return <Spinner />;
   return (
     <ul className={styles.cityList}>
       {cities.map((city) => {

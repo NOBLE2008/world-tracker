@@ -26,7 +26,8 @@ function Form() {
   const [notes, setNotes] = useState("");
   const [emoji, setEmoji] = useState("");
 
-  const { postCity, isLoading } = useContext(CityContext);
+  const navigate = useNavigate();
+  const { postCity, isLoading, getCity } = useContext(CityContext);
 
   const [searchParams] = useSearchParams();
 
@@ -47,6 +48,8 @@ function Form() {
         lng,
       },
     });
+    getCity()
+    navigate('/app/cities')
   };
 
   useEffect(() => {
