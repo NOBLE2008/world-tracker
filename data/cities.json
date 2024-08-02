@@ -47,6 +47,18 @@
         "lat": "9.084417016036884",
         "lng": "7.517279287704929"
       }
+    },
+    {
+      "id": "19fa",
+      "cityName": "Lagos",
+      "country": "Nigeria",
+      "emoji": "🇳🇬",
+      "date": "2024-08-02T06:18:00.032Z",
+      "notes": "I went there for a TB Test and a VISA Application",
+      "position": {
+        "lat": "6.483422077929007",
+        "lng": "3.4179206203826116"
+      }
     }
   ]
 }

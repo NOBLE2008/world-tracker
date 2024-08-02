@@ -99,6 +99,8 @@ export default function Map() {
 
     useMapEvents({
       click: (e) => {
+        setUseMyPosition(false)
+         console.log(e.latlng.lng)
         navigate(`form?lat=${e.latlng.lat}&lng=${e.latlng.lng}`);
       },
     });
