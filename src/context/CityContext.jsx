@@ -1,45 +1,59 @@
-import React, { createContext, useCallback, useEffect, useReducer, useState } from "react";
+import React, {
+  createContext,
+  useCallback,
+  useEffect,
+  useReducer,
+  useState,
+} from "react";
 
 const CityContext = createContext();
 
-function reducer(state, action){
+function reducer(state, action) {
   // Your reducer logic here
-  switch(action.type){
-    case 'cities/loaded': return {
-      ...state,
-      cities: action.payload,
-      isLoading: false,
-    }
-    case 'cities/new': return {
-     ...state,
-      cities: [...state.cities, action.payload],
-      isLoading: false,
-    }
-    case 'cities/deleted': return {
-      ...state,
-      cities: state.cities.filter(c => c.id !== action.payload),
-      isLoading: false,
-    }
-    case 'loading': return {
-     ...state,
-      isLoading: true,
-    }
-    case 'currentCity/loaded': return {
-      ...state,
-      currentCity: action.payload,
-      isLoading: false,
-    }
-    case 'rejected': return {
-     ...state,
-      error: action.payload,
-      isLoading: false,
-    }
-    case 'changePosition': return {
-      ...state,
-      position: action.payload,
-    }
+  switch (action.type) {
+    case "cities/loaded":
+      return {
+        ...state,
+        cities: action.payload,
+        isLoading: false,
+      };
+    case "cities/new":
+      return {
+        ...state,
+        cities: [...state.cities, action.payload],
+        isLoading: false,
+      };
+    case "cities/deleted":
+      return {
+        ...state,
+        cities: state.cities.filter((c) => c.id !== action.payload),
+        isLoading: false,
+      };
+    case "loading":
+      return {
+        ...state,
+        isLoading: true,
+      };
+    case "currentCity/loaded":
+      return {
+        ...state,
+        currentCity: action.payload,
+        isLoading: false,
+      };
+    case "rejected":
+      return {
+        ...state,
+        error: action.payload,
+        isLoading: false,
+      };
+    case "changePosition":
+      return {
+        ...state,
+        position: action.payload,
+      };
 
-    default: throw new Error(`Invalid action ${action.type}`);
+    default:
+      throw new Error(`Invalid action ${action.type}`);
   }
 }
 
@@ -48,8 +62,8 @@ const initialState = {
   isLoading: false,
   currentCity: {},
   position: [],
-  error: ""
-}
+  error: "",
+};
 
 function CityProvider({ children }) {
   // const [cities, setCities] = useState([]);
@@ -57,17 +71,20 @@ function CityProvider({ children }) {
   // const [currentCity, setCurrentCity] = useState({});
   // const [position, setPosition] = useState([]);
 
-  const [{cities, isLoading, currentCity, position}, dispatch] = useReducer(reducer, initialState);
+  const [{ cities, isLoading, currentCity, position }, dispatch] = useReducer(
+    reducer,
+    initialState
+  );
 
   useEffect(function () {
     async function fetchData() {
-      dispatch({type: 'loading'})
+      dispatch({ type: "loading" });
       try {
         const res = await fetch("http://localhost:9000/cities");
         const data = await res.json();
-        dispatch({type: 'cities/loaded', payload: data});
+        dispatch({ type: "cities/loaded", payload: data });
       } catch (err) {
-        dispatch({type: 'rejected', payload: err.message});
+        dispatch({ type: "rejected", payload: err.message });
       }
     }
     fetchData();
@@ -75,41 +92,41 @@ function CityProvider({ children }) {
 
   const getCity = useCallback(async function getCity(id) {
     try {
-      dispatch({type: 'loading'})
+      dispatch({ type: "loading" });
       const res = await fetch(`http://localhost:9000/cities/${id}`);
       const data = await res.json();
-      dispatch({type: 'currentCity/loaded', payload: data});
+      dispatch({ type: "currentCity/loaded", payload: data });
     } catch (err) {
-      dispatch({type: 'rejected', payload: err.message});
+      dispatch({ type: "rejected", payload: err.message });
     }
-  }, [])
+  }, []);
 
   const postCity = useCallback(async function postCity(body) {
     try {
-      dispatch({type: 'loading'})
+      dispatch({ type: "loading" });
       const res = await fetch("http://localhost:9000/cities", {
         method: "POST",
         body: JSON.stringify(body),
         headers: { "Content-Type": "application/json" },
       });
       const data = await res.json();
-      dispatch({type: 'cities/new', payload: data});
+      dispatch({ type: "cities/new", payload: data });
     } catch (err) {
-      dispatch({type: 'rejected', payload: err.message})
+      dispatch({ type: "rejected", payload: err.message });
     }
-  }, [])
+  }, []);
 
-  async function deleteCity(id){
+  const deleteCity = useCallback(async function deleteCity(id) {
     try {
-      dispatch({type: 'loading'})
+      dispatch({ type: "loading" });
       const res = await fetch(`http://localhost:9000/cities/${id}`, {
         method: "DELETE",
       });
-      dispatch({type: 'cities/deleted', payload: id})
+      dispatch({ type: "cities/deleted", payload: id });
     } catch (err) {
-      dispatch({type: 'rejected', payload: err.message})
+      dispatch({ type: "rejected", payload: err.message });
     }
-  }
+  });
   return (
     <CityContext.Provider
       value={{
