@@ -84,7 +84,7 @@ function CityProvider({ children }) {
     }
   }, [])
 
-  async function postCity(body) {
+  const postCity = useCallback(async function postCity(body) {
     try {
       dispatch({type: 'loading'})
       const res = await fetch("http://localhost:9000/cities", {
@@ -97,7 +97,7 @@ function CityProvider({ children }) {
     } catch (err) {
       dispatch({type: 'rejected', payload: err.message})
     }
-  }
+  }, [])
 
   async function deleteCity(id){
     try {
