@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useState } from "react";
+import React, { memo, useContext, useEffect, useState } from "react";
 import styles from "./Map.module.css";
 import { useNavigate, useSearchParams } from "react-router-dom";
 import {
@@ -15,9 +15,8 @@ import useGeoLocation from "../../hooks/useGeoLocation";
 import Spinner from "./Spinner";
 import Button from "./Button";
 
-export default function Map() {
-  const { currentCity } = useContext(CityContext);
-  const { cities } = useContext(CityContext);
+const Map = memo(function Map() {
+  const { currentCity, cities } = useContext(CityContext);
 
   const [searchParams, setSearchParams] = useSearchParams();
 
@@ -35,7 +34,7 @@ export default function Map() {
 
   useEffect(() => {
     if (geoPosition === null) return;
-    dispatch({type: 'changePosition', payload: geoPosition});
+    dispatch({ type: "changePosition", payload: geoPosition });
   }, [geoPosition, dispatch]);
 
   if (isLoading) return <Spinner />;
@@ -99,10 +98,12 @@ export default function Map() {
 
     useMapEvents({
       click: (e) => {
-        setUseMyPosition(false)
-         console.log(e.latlng.lng)
+        setUseMyPosition(false);
+        console.log(e.latlng.lng);
         navigate(`form?lat=${e.latlng.lat}&lng=${e.latlng.lng}`);
       },
     });
   }
-}
+});
+
+export default Map;

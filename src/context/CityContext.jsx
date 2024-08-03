@@ -1,4 +1,4 @@
-import React, { createContext, useEffect, useReducer, useState } from "react";
+import React, { createContext, useCallback, useEffect, useReducer, useState } from "react";
 
 const CityContext = createContext();
 
@@ -73,7 +73,7 @@ function CityProvider({ children }) {
     fetchData();
   }, []);
 
-  async function getCity(id) {
+  const getCity = useCallback(async function getCity(id) {
     try {
       dispatch({type: 'loading'})
       const res = await fetch(`http://localhost:9000/cities/${id}`);
@@ -82,7 +82,7 @@ function CityProvider({ children }) {
     } catch (err) {
       dispatch({type: 'rejected', payload: err.message});
     }
-  }
+  }, [])
 
   async function postCity(body) {
     try {
