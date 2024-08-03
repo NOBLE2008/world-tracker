@@ -1,11 +1,12 @@
 import "./App.css";
 import { BrowserRouter, Navigate, Route, Routes } from "react-router-dom";
-import Homepage from "./pages/Homepage";
-import Pricing from "./pages/Pricing";
-import Product from "./pages/Product";
-import PageNotFound from "./pages/PageNotFound";
-import Login from "./pages/Login";
-import AppLayout from "./pages/AppLayout";
+import { lazy } from "react";
+import SpinnerFullPage from './components/SpinnerFullPage'
+const Homepage = lazy(import('./pages/Homepage'))
+const Pricing = lazy(import('./pages/Pricing'))
+const Product = lazy(import('./pages/Product'))
+const PageNotFound = lazy(import('./pages/PageNotFound'))
+const AppLayout = lazy(import('./pages/AppLayout'))
 import CityList from "./components/CityList";
 import CountryList from "./components/CountryList";
 import City from "./components/City";
@@ -13,7 +14,6 @@ import Form from "./components/Form";
 import { CityProvider } from "./context/CityContext";
 import { AuthProvider } from "./context/AuthContext";
 import ProtectedRoute from "./pages/ProtectedRoute";
-
 function App() {
   return (
     <CityProvider>
