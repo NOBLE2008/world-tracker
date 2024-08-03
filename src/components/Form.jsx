@@ -48,8 +48,8 @@ function Form() {
         lng,
       },
     });
-    getCity()
-    navigate('/app/cities')
+    getCity();
+    navigate("/app/cities");
   };
 
   useEffect(() => {
